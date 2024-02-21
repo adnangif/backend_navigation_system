@@ -11,6 +11,8 @@ if __name__ == '__main__':
     # Apply threshold to convert to binary image
     threshold_img = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
 
+    cv2.imwrite("output.jpg",threshold_img)
+
     # Pass the image through pytesseract
     text = pytesseract.image_to_string(threshold_img)
 
