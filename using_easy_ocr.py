@@ -32,12 +32,12 @@ def download_image(url, file_name):
 
 
 if __name__ == '__main__':
-    server_url = "http://192.168.0.110/capture"
+    server_url = "http://192.168.72.210/capture"
     download_image(server_url,'fetched.jpg')
 
     inv = preprocess_image('fetched.jpg')
 
-    reader = easyocr.Reader(['en'],gpu=False) 
+    reader = easyocr.Reader(['en']) 
     result = reader.readtext(inv)
     print(result)
 
