@@ -1,18 +1,15 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 from .forms import UploadFileForm
 from .utils import Decoder
 
 # Create your views here.
 
-
+@csrf_exempt
 def get_instruction(request):
     return HttpResponse(
-        '''
-        <html>
-            <h1>This was generated in the laptop </h1>
-        </html>
-        '''
+        '''@FBBFFBRLFBRL$'''
     )
 
 
