@@ -55,6 +55,41 @@ class Map:
         
         return (str_path[::-1])
 
+    def transformed_path(self) -> str:
+        actual_path = self.path()
+        new_path = ''
+
+        altered = deque()
+        altered.append('L')
+        altered.append('U')
+        altered.append('R')
+        altered.append('D')
+
+        memo = {
+            'L':0,
+            'U':1,
+            'R':2,
+            'D':3,
+            }
+
+
+        for current_command in actual_path:
+            direction = altered[memo[current_command]]
+
+            new_path += direction
+            
+            if(direction == 'L'):
+                temp = altered.popleft()
+                altered.append(temp)
+
+            elif(direction == 'R'):
+                temp = altered.pop()
+                altered.appendleft(temp)
+
+        return new_path
+            
+            
+
 
     def bfs(self) -> None:
         vis:list[Point] = []
@@ -101,34 +136,16 @@ class Map:
 
 
 
-
-def find_path(location:str):
-    location = location.split(',')
-    map = [
-        [0,0,0],
-        [0,0,0],
-        [0,0,0],
-    ]
-
-    assert len(location) == 2
-
-    location[0] = int(location[0].strip())
-    location[1] = int(location[1].strip())
-
-    print(location)
-
-
-    pass
-
-
 if __name__ =="__main__":
-    m = Map(Point(4,2),
+    m = Map(Point(5,3),
     [
-        [0,0,0],
-        [1,0,0],
-        [0,0,1],
-        [0,1,0],
-        [0,0,0],
+        [0,1,1,1],
+        [0,0,0,0],
+        [1,1,1,0],
+        [0,0,0,0],
+        [0,1,1,1],
+        [0,0,0,0],
     ])
     m.bfs()
     print(m.path())
+    print(m.transformed_path())
