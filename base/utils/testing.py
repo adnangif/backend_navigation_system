@@ -1,30 +1,27 @@
-import socket
+import cv2
+from pyzbar.pyzbar import decode
 
-def scan_for_esp32():
-    esp32_devices = []
-    # Define the IP range to scan, adjust as needed
-    ip_range = "192.168.1."
-    # Define the port that ESP32 devices commonly use (adjust if needed)
-    port = 80  
+def read_qr_code(image_path):
+    # Read the image
+    image = cv2.imread(image_path)
 
-    for i in range(1, 255):
-        ip = ip_range + str(i)
-        try:
-            # Create a socket object
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.settimeout(0.1)  # Set timeout for connection attempt
-            # Attempt to connect to the IP address and port
-            result = sock.connect_ex((ip, port))
-            if result == 0:
-                print(f"ESP32 found at IP address: {ip}")
-                esp32_devices.append(ip)
-            sock.close()
-        except socket.error:
-            pass
+    # Convert image to grayscale
+    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    return esp32_devices
+    # Decode QR code
+    decoded_objects = decode(gray_image)
+
+    # Extract data from decoded objects
+    qr_codes_data = [obj.data.decode('utf-8') for obj in decoded_objects]
+    
+    return qr_codes_data
 
 if __name__ == "__main__":
-    esp32_devices = scan_for_esp32()
-    if not esp32_devices:
-        print("No ESP32 devices found on the network.")
+    image_path = "output.jpg"  # Change this to your image path
+    qr_codes_data = read_qr_code(image_path)
+    if qr_codes_data:
+        print("QR Code(s) found:")
+        for data in qr_codes_data:
+            print(data)
+    else:
+        print("No QR Code found in the image.")
