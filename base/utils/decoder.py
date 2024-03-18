@@ -14,6 +14,8 @@ def read_qr_code(image_path):
 
     # Extract data from decoded objects
     qr_codes_data = [obj.data.decode('utf-8') for obj in decoded_objects]
+
+    print(qr_codes_data)
     
     return qr_codes_data
 
